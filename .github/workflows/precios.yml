@@ -1,0 +1,58 @@
+name: Extract selenium
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '*/5 * * * *'  # Ejecutar cada minuto
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+      
+      - name: Configurar Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+          cache: 'pip'  # caching pip dependencies
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Ejecutar script de extracción
+        run: |
+          python main.py
+
+      - name: Subir datos
+        uses: actions/upload-artifact@v4
+        with:
+          name: precios
+          path: precios.csv
+
+  load:
+    runs-on: ubuntu-latest
+    needs: extract
+    steps: 
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.10' 
+          cache: 'pip' # caching pip dependencies
+      - run: pip install -r requirements.txt
+      - name: Descargar datos de extracción
+        uses: actions/download-artifact@v4
+        with:
+          name: precios
+          
+      
+      - name: Subir datos a MySQL
+        run: python load.py
+        env:
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
