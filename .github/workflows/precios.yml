@@ -1,4 +1,4 @@
-name: Extract selenium
+name: Extract price
 
 on:
   workflow_dispatch:
