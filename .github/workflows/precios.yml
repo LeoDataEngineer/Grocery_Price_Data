@@ -1,9 +1,9 @@
 name: Extract price
 
 on:
+  schedule:
+    - cron: '0 12 * * *'
   workflow_dispatch:
-  # schedule:
-  #   - cron: '*/5 * * * *'  # Ejecutar cada minuto
 
 jobs:
   extract:
