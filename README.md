@@ -54,4 +54,8 @@ Proyecto dedicado a la recopilación, procesamiento y análisis de precios de pr
       ![cambio de tipo de datos](/imagen/casteos.png)    
 
 - Se cargan los datos en una base de datos (MySQL) con la herramienta de MySQL Connector/Python.
+   ![cambio de tipo de datos](/imagen/db.png) 
+
 - Se hace un proceso de ETL automatizado usando GitHub Actions para el CI/CD.
+
+  ![cambio de tipo de datos](/imagen/workflow.png) 
